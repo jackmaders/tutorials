@@ -65,7 +65,7 @@ function CursorChat({
             className="absolute left-2 top-5 rounded-2xl bg-blue-500 px-4 py-2 text-sm leading-relaxed text-white"
           >
             {cursorState.previousMessage && (
-              <div className="">{cursorState.previousMessage}</div>
+              <div className="text-start">{cursorState.previousMessage}</div>
             )}
 
             <input
@@ -74,6 +74,7 @@ function CursorChat({
                 cursorState.previousMessage ? "" : "Type a message..."
               }
               autoFocus
+              value={cursorState.message}
               onChange={handleOnChange}
               onKeyDown={handleKeydown}
             />
