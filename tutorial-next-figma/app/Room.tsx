@@ -10,7 +10,7 @@ import {
 export function Room({ children }: { children: ReactNode }) {
   if (!process.env.NEXT_PUBLIC_LIVEBLOCKS_PUBLIC_KEY) {
     throw new Error(
-      "Missing environment variable: NEXT_PUBLIC_LIVEBLOCKS_PUBLIC_KEY"
+      "Missing environment variable: NEXT_PUBLIC_LIVEBLOCKS_PUBLIC_KEY",
     );
   }
 
