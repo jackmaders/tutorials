@@ -144,6 +144,8 @@ function LiveEnvironment() {
           });
           break;
         case keyboardEventKey.E:
+          if (cursorState.mode === cursorMode.CHAT) break;
+
           setCursorState({
             mode: cursorMode.REACTION_SELECTOR,
           });
@@ -166,7 +168,7 @@ function LiveEnvironment() {
       window.removeEventListener("keyup", onKeyUp);
       window.removeEventListener("keydown", onKeyDown);
     };
-  }, [updateMyPresence]);
+  }, [updateMyPresence, cursorState]);
 
   const setReactions = useCallback((reaction: Reaction) => {
     setCursorState({
