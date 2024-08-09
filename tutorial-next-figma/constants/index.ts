@@ -1,5 +1,3 @@
-
-
 export const SHAPE_ELEMENTS = [
   {
     icon: "/assets/rectangle.svg",
