@@ -1,30 +1,6 @@
-import { BaseUserMeta, User } from "@liveblocks/client";
+import cursorMode from "@/constants/cursorMode.enum";
 import fabric from "fabric";
-
-export enum CursorMode {
-  Hidden,
-  Chat,
-  ReactionSelector,
-  Reaction,
-}
-
-export type CursorState =
-  | {
-      mode: CursorMode.Hidden;
-    }
-  | {
-      mode: CursorMode.Chat;
-      message: string;
-      previousMessage: string | null;
-    }
-  | {
-      mode: CursorMode.ReactionSelector;
-    }
-  | {
-      mode: CursorMode.Reaction;
-      reaction: string;
-      isPressed: boolean;
-    };
+import CursorState from "./cursorState";
 
 export type Reaction = {
   value: string;
@@ -172,17 +148,4 @@ export type RenderCanvas = {
   fabricRef: React.MutableRefObject<fabric.Canvas | null>;
   canvasObjects: any;
   activeObjectRef: any;
-};
-
-export type CursorChatProps = {
-  cursor: { x: number; y: number };
-  cursorState: CursorState;
-  setCursorState: (cursorState: CursorState) => void;
-  updateMyPresence: (
-    presence: Partial<{
-      cursor: { x: number; y: number };
-      cursorColor: string;
-      message: string;
-    }>,
-  ) => void;
 };

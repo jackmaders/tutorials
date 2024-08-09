@@ -2,11 +2,19 @@
 
 import { useMyPresence, useOthers } from "@liveblocks/react/suspense";
 import LiveCursors from "./cursor/LiveCursors";
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
+import CursorChat from "./cursor/CursorChat";
+import cursorMode from "@/constants/cursorMode.enum";
+import CursorState from "@/types/cursorState";
+import keyboardEventKey from "@/constants/keyboardEventKey.enum";
 
 function LiveEnvironment() {
   const others = useOthers();
   const [{ cursor }, updateMyPresence] = useMyPresence();
+
+  const [cursorState, setCursorState] = useState<CursorState>({
+    mode: cursorMode.HIDDEN,
+  });
 
   const handlePointerMove = useCallback(
     (event: React.PointerEvent) => {
@@ -30,7 +38,7 @@ function LiveEnvironment() {
 
   const handlePointerLeave = useCallback(
     (event: React.PointerEvent) => {
-      event.preventDefault();
+      setCursorState({ mode: cursorMode.HIDDEN });
 
       const presence = {
         cursor: undefined,
@@ -59,6 +67,42 @@ function LiveEnvironment() {
     [updateMyPresence],
   );
 
+  useEffect(() => {
+    const onKeyUp = (event: KeyboardEvent) => {
+      switch (event.key) {
+        case keyboardEventKey.FORWARD_SLASH:
+          setCursorState({
+            mode: cursorMode.CHAT,
+            previousMessage: null,
+            message: "",
+          });
+          break;
+        case keyboardEventKey.ESCAPE:
+          updateMyPresence({ message: "" });
+          setCursorState({
+            mode: cursorMode.HIDDEN,
+          });
+          break;
+      }
+    };
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      switch (event.key) {
+        case keyboardEventKey.FORWARD_SLASH:
+          event.preventDefault();
+          break;
+      }
+    };
+
+    window.addEventListener("keyup", onKeyUp);
+    window.addEventListener("keydown", onKeyDown);
+
+    return () => {
+      window.removeEventListener("keyup", onKeyUp);
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [updateMyPresence]);
+
   return (
     <div
       className="flex h-screen w-screen items-center justify-center text-center"
@@ -67,6 +111,14 @@ function LiveEnvironment() {
       onPointerLeave={handlePointerLeave}
     >
       <h1 className="text-2xl text-white">Liveblocks Figma Clone</h1>
+      {cursor && (
+        <CursorChat
+          cursor={cursor}
+          cursorState={cursorState}
+          setCursorState={setCursorState}
+          updateMyPresence={updateMyPresence}
+        />
+      )}
       <LiveCursors others={others} />
     </div>
   );

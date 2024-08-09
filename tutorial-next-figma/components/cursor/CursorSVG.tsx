@@ -1,4 +1,6 @@
-function CursorSVG({ colour }: { colour: string }) {
+import Colour from "@/constants/colour.enum";
+
+function CursorSVG({ colour }: { colour: Colour }) {
   return (
     <svg
       className="relative"

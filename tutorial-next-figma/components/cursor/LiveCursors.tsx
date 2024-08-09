@@ -1,4 +1,4 @@
-import COLOUR from "@/constants/colour";
+import Colour from "@/constants/colour.enum";
 import { BaseUserMeta, User } from "@liveblocks/client";
 import Cursor from "./Cursor";
 
@@ -23,7 +23,7 @@ function LiveCursors({ others }: LiveCursorsProps) {
 }
 
 function getRandomColour(connectionId: number) {
-  const colourValues = Object.values(COLOUR);
+  const colourValues = Object.values(Colour);
   const colourIndex = Number(connectionId) % colourValues.length;
 
   return colourValues[colourIndex];
