@@ -1,4 +1,5 @@
 import cursorMode from "@/constants/cursorMode.enum";
+import Reaction from "@/constants/reaction.enum";
 
 type CursorState =
   | {
@@ -14,7 +15,7 @@ type CursorState =
     }
   | {
       mode: cursorMode.REACTION;
-      reaction: string;
+      reaction: Reaction;
       isPressed: boolean;
     };
 

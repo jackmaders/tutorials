@@ -1,18 +1,4 @@
-import cursorMode from "@/constants/cursorMode.enum";
 import fabric from "fabric";
-import CursorState from "./cursorState";
-
-export type Reaction = {
-  value: string;
-  timestamp: number;
-  point: { x: number; y: number };
-};
-
-export type ReactionEvent = {
-  x: number;
-  y: number;
-  value: string;
-};
 
 export type ShapeData = {
   type: string;

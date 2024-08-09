@@ -1,12 +1,22 @@
 "use client";
 
-import { useMyPresence, useOthers } from "@liveblocks/react/suspense";
-import LiveCursors from "./cursor/LiveCursors";
+import cursorMode from "@/constants/cursorMode.enum";
+import keyboardEventKey from "@/constants/keyboardEventKey.enum";
+import Reaction from "@/constants/reaction.enum";
+import useInterval from "@/hooks/useInterval";
+import CursorState from "@/types/cursorState";
+import ReactionEvent from "@/types/reactionEvent";
+import {
+  useBroadcastEvent,
+  useEventListener,
+  useMyPresence,
+  useOthers,
+} from "@liveblocks/react/suspense";
 import { useCallback, useEffect, useState } from "react";
 import CursorChat from "./cursor/CursorChat";
-import cursorMode from "@/constants/cursorMode.enum";
-import CursorState from "@/types/cursorState";
-import keyboardEventKey from "@/constants/keyboardEventKey.enum";
+import LiveCursors from "./cursor/LiveCursors";
+import FlyingReaction from "./reaction/FlyingReaction";
+import ReactionSelector from "./reaction/ReactionSelector";
 
 function LiveEnvironment() {
   const others = useOthers();
@@ -15,10 +25,47 @@ function LiveEnvironment() {
   const [cursorState, setCursorState] = useState<CursorState>({
     mode: cursorMode.HIDDEN,
   });
+  const [reactionEvents, setReactionEvents] = useState<ReactionEvent[]>([]);
+
+  const broadcast = useBroadcastEvent();
+
+  useInterval(() => {
+    if (!cursor) return;
+    if (cursorState.mode !== cursorMode.REACTION) return;
+    if (!cursorState.isPressed) return;
+
+    const newReactionEvent = {
+      point: { x: cursor.x, y: cursor.y },
+      reaction: cursorState.reaction,
+      timestamp: Date.now(),
+    };
+
+    setReactionEvents((reactionEvents) =>
+      reactionEvents.concat(newReactionEvent),
+    );
+
+    broadcast(newReactionEvent);
+  }, 100);
+
+  useInterval(() => {
+    setReactionEvents((reactionEvents) =>
+      reactionEvents.filter(
+        (reactionEvent) => reactionEvent.timestamp > Date.now() - 4000,
+      ),
+    );
+  }, 1000);
+
+  useEventListener(({ event }) => {
+    setReactionEvents((reactionEvents) =>
+      reactionEvents.concat(event as ReactionEvent),
+    );
+  });
 
   const handlePointerMove = useCallback(
     (event: React.PointerEvent) => {
       event.preventDefault();
+
+      if (cursor && cursorState.mode === cursorMode.REACTION_SELECTOR) return;
 
       const { clientX, clientY } = event;
       const { x: rectX, y: rectY } =
@@ -33,7 +80,7 @@ function LiveEnvironment() {
 
       updateMyPresence(presence);
     },
-    [updateMyPresence],
+    [updateMyPresence, cursor, cursorState],
   );
 
   const handlePointerLeave = useCallback(
@@ -63,8 +110,21 @@ function LiveEnvironment() {
       };
 
       updateMyPresence(presence);
+
+      setCursorState((state) =>
+        cursorState.mode ? { ...state, isPressed: true } : state,
+      );
     },
-    [updateMyPresence],
+    [updateMyPresence, cursorState],
+  );
+
+  const handlePointerUp = useCallback(
+    (event: React.PointerEvent) => {
+      setCursorState((state) =>
+        cursorState.mode ? { ...state, isPressed: true } : state,
+      );
+    },
+    [cursorState],
   );
 
   useEffect(() => {
@@ -81,6 +141,11 @@ function LiveEnvironment() {
           updateMyPresence({ message: "" });
           setCursorState({
             mode: cursorMode.HIDDEN,
+          });
+          break;
+        case keyboardEventKey.E:
+          setCursorState({
+            mode: cursorMode.REACTION_SELECTOR,
           });
           break;
       }
@@ -103,14 +168,33 @@ function LiveEnvironment() {
     };
   }, [updateMyPresence]);
 
+  const setReactions = useCallback((reaction: Reaction) => {
+    setCursorState({
+      mode: cursorMode.REACTION,
+      reaction: reaction,
+      isPressed: false,
+    });
+  }, []);
+
   return (
     <div
       className="flex h-screen w-screen items-center justify-center text-center"
       onPointerMove={handlePointerMove}
       onPointerDown={handlePointerDown}
       onPointerLeave={handlePointerLeave}
+      onPointerUp={handlePointerUp}
     >
       <h1 className="text-2xl text-white">Liveblocks Figma Clone</h1>
+
+      {reactionEvents.map(({ reaction, timestamp, point }) => (
+        <FlyingReaction
+          key={timestamp.toString()}
+          x={point.x}
+          y={point.y}
+          timestamp={timestamp}
+          reaction={reaction}
+        />
+      ))}
       {cursor && (
         <CursorChat
           cursor={cursor}
@@ -118,6 +202,10 @@ function LiveEnvironment() {
           setCursorState={setCursorState}
           updateMyPresence={updateMyPresence}
         />
+      )}
+
+      {cursorState.mode === cursorMode.REACTION_SELECTOR && (
+        <ReactionSelector setReaction={setReactions} />
       )}
       <LiveCursors others={others} />
     </div>
