@@ -121,7 +121,7 @@ function LiveEnvironment() {
   const handlePointerUp = useCallback(
     (event: React.PointerEvent) => {
       setCursorState((state) =>
-        cursorState.mode ? { ...state, isPressed: true } : state,
+        cursorState.mode ? { ...state, isPressed: false } : state,
       );
     },
     [cursorState],
