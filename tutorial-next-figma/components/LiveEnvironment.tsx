@@ -12,13 +12,17 @@ import {
   useMyPresence,
   useOthers,
 } from "@liveblocks/react/suspense";
-import { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import CursorChat from "./cursor/CursorChat";
 import LiveCursors from "./cursor/LiveCursors";
 import FlyingReaction from "./reaction/FlyingReaction";
 import ReactionSelector from "./reaction/ReactionSelector";
 
-function LiveEnvironment() {
+interface LiveEnvironmentProps {
+  canvasRef: React.MutableRefObject<HTMLCanvasElement | null>;
+}
+
+function LiveEnvironment({ canvasRef }: LiveEnvironmentProps) {
   const others = useOthers();
   const [{ cursor }, updateMyPresence] = useMyPresence();
 
@@ -178,13 +182,14 @@ function LiveEnvironment() {
 
   return (
     <div
+      id="canvas"
       className="flex h-screen w-screen items-center justify-center text-center"
       onPointerMove={handlePointerMove}
       onPointerDown={handlePointerDown}
       onPointerLeave={handlePointerLeave}
       onPointerUp={handlePointerUp}
     >
-      <h1 className="text-2xl text-white">Liveblocks Figma Clone</h1>
+      <canvas ref={canvasRef} />
 
       {reactionEvents.map(({ reaction, timestamp, point }) => (
         <FlyingReaction
