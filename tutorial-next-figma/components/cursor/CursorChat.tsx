@@ -62,6 +62,7 @@ function CursorChat({
           <CursorSVG colour={Colour.BLACK} />
           <form
             onSubmit={handleOnSubmit}
+            onKeyUp={(e) => e.stopPropagation()}
             className="absolute left-2 top-5 rounded-2xl bg-blue-500 px-4 py-2 text-sm leading-relaxed text-white"
           >
             {cursorState.previousMessage && (

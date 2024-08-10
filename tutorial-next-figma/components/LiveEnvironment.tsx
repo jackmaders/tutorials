@@ -144,8 +144,6 @@ function LiveEnvironment() {
           });
           break;
         case keyboardEventKey.E:
-          if (cursorState.mode === cursorMode.CHAT) break;
-
           setCursorState({
             mode: cursorMode.REACTION_SELECTOR,
           });
