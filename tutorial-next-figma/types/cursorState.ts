@@ -1,5 +1,5 @@
-import cursorMode from "@/constants/cursorMode.enum";
-import Reaction from "@/constants/reaction.enum";
+import cursorMode from "@/constants/enums/cursorMode.enum";
+import Reaction from "@/constants/enums/reaction.enum";
 
 type CursorState =
   | {

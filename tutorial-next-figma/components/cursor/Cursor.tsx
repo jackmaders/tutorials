@@ -1,4 +1,4 @@
-import COLOURS from "@/constants/colour.enum";
+import COLOURS from "@/constants/enums/colour.enum";
 import CursorSVG from "./CursorSVG";
 
 interface CursorProps {

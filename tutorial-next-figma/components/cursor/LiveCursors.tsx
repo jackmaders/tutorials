@@ -1,4 +1,4 @@
-import Colour from "@/constants/colour.enum";
+import Colour from "@/constants/enums/colour.enum";
 import { BaseUserMeta, User } from "@liveblocks/client";
 import Cursor from "./Cursor";
 

@@ -1,8 +1,8 @@
 "use client";
 
-import cursorMode from "@/constants/cursorMode.enum";
-import keyboardEventKey from "@/constants/keyboardEventKey.enum";
-import Reaction from "@/constants/reaction.enum";
+import cursorMode from "@/constants/enums/cursorMode.enum";
+import keyboardEventKey from "@/constants/enums/keyboardEventKey.enum";
+import Reaction from "@/constants/enums/reaction.enum";
 import useInterval from "@/hooks/useInterval";
 import CursorState from "@/types/cursorState";
 import ReactionEvent from "@/types/reactionEvent";

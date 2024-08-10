@@ -1,8 +1,8 @@
-import Colour from "@/constants/colour.enum";
-import cursorMode from "@/constants/cursorMode.enum";
+import Colour from "@/constants/enums/colour.enum";
+import cursorMode from "@/constants/enums/cursorMode.enum";
 import CursorSVG from "./CursorSVG";
 import CursorState from "@/types/cursorState";
-import keyboardEventKey from "@/constants/keyboardEventKey.enum";
+import keyboardEventKey from "@/constants/enums/keyboardEventKey.enum";
 
 export type CursorChatProps = {
   cursor: NonNullable<Liveblocks["Presence"]["cursor"]>;

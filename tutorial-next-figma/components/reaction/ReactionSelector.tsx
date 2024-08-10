@@ -1,4 +1,4 @@
-import Reaction from "@/constants/reaction.enum";
+import Reaction from "@/constants/enums/reaction.enum";
 import ReactionButton from "./ReactionButton";
 
 interface ReactionSelectorProps {

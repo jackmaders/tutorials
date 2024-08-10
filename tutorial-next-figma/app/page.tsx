@@ -1,9 +1,13 @@
 import LiveEnvironment from "@/components/LiveEnvironment";
+import Navbar from "@/components/Navbar";
 
 export default function Page() {
   return (
-    <div className="flex h-screen w-screen items-center justify-center text-center">
-      <LiveEnvironment />
-    </div>
+    <main className="h-screen overflow-hidden">
+      <Navbar />
+      <section className="f-full flex flex-row">
+        <LiveEnvironment />
+      </section>
+    </main>
   );
 }

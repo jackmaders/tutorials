@@ -20,12 +20,6 @@ export type Attributes = {
   stroke: string;
 };
 
-export type ActiveElement = {
-  name: string;
-  value: string;
-  icon: string;
-} | null;
-
 export interface CustomFabricObject<T extends fabric.Object>
   extends fabric.Object {
   objectId?: string;
@@ -61,24 +55,17 @@ export type RightSidebarProps = {
   syncShapeInStorage: (obj: any) => void;
 };
 
-export type NavbarProps = {
-  activeElement: ActiveElement;
-  imageInputRef: React.MutableRefObject<HTMLInputElement | null>;
-  handleImageUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleActiveElement: (element: ActiveElement) => void;
-};
-
-export type ShapesMenuProps = {
-  item: {
-    name: string;
-    icon: string;
-    value: Array<ActiveElement>;
-  };
-  activeElement: any;
-  handleActiveElement: any;
-  handleImageUpload: any;
-  imageInputRef: any;
-};
+// export type ShapesMenuProps = {
+//   item: {
+//     name: string;
+//     icon: string;
+//     value: Array<ActiveElement>;
+//   };
+//   activeElement: any;
+//   handleActiveElement: any;
+//   handleImageUpload: any;
+//   imageInputRef: any;
+// };
 
 export type CanvasMouseDown = {
   options: fabric.TEvent;
