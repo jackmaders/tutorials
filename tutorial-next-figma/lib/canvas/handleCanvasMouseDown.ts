@@ -5,7 +5,7 @@ import createSpecificShape from "../shapes/createSpecificShape";
 interface handleCanvasMouseDownProps {
   options: TEvent;
   canvas: Canvas;
-  selectedShapeRef: React.MutableRefObject<FabricObjectType>;
+  selectedShapeRef: React.MutableRefObject<FabricObjectType | null>;
   isDrawing: React.MutableRefObject<boolean>;
   shapeRef: React.MutableRefObject<FabricObject | null>;
 }
@@ -47,8 +47,7 @@ function handleCanvasMouseDown({
   // if target is the selected shape or active selection, set isDrawing to false
   if (
     target &&
-    (target.type === selectedShapeRef.current ||
-      target.type === "activeSelection")
+    (target.type === selectedShapeRef.current || target.activeOn === "down")
   ) {
     isDrawing.current = false;
 
@@ -60,7 +59,7 @@ function handleCanvasMouseDown({
      * setCoords: http://fabricjs.com/docs/fabric.Object.html#setCoords
      */
     target.setCoords();
-  } else {
+  } else if (selectedShapeRef.current) {
     isDrawing.current = true;
 
     // create custom fabric object/shape and set it to shapeRef

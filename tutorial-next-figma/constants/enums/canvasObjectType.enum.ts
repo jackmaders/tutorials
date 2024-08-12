@@ -1,7 +1,7 @@
 enum FabricObjectType {
   CIRCLE = "circle",
   LINE = "line",
-  RECTANGLE = "rectangle",
+  RECTANGLE = "rect",
   TEXT = "text",
   TRIANGLE = "triangle",
   FREEFORM = "freeform",

@@ -3,7 +3,6 @@ import { v4 as uuid4 } from "uuid";
 
 import {
   CanvasMouseDown,
-  CanvasMouseMove,
   CanvasMouseUp,
   CanvasObjectModified,
   CanvasObjectScaling,
@@ -14,73 +13,73 @@ import {
 
 // instantiate creation of custom fabric object/shape and add it to canvas
 
-// handle mouse move event on canvas to draw shapes with different dimensions
-export const handleCanvaseMouseMove = ({
-  options,
-  canvas,
-  isDrawing,
-  selectedShapeRef,
-  shapeRef,
-  syncShapeInStorage,
-}: CanvasMouseMove) => {
-  // if selected shape is freeform, return
-  if (!isDrawing.current) return;
-  if (selectedShapeRef.current === "freeform") return;
+// // handle mouse move event on canvas to draw shapes with different dimensions
+// export const handleCanvasMouseMove = ({
+//   options,
+//   canvas,
+//   isDrawing,
+//   selectedShapeRef,
+//   shapeRef,
+//   syncShapeInStorage,
+// }: CanvasMouseMove) => {
+//   // if selected shape is freeform, return
+//   if (!isDrawing.current) return;
+//   if (selectedShapeRef.current === "freeform") return;
 
-  canvas.isDrawingMode = false;
+//   canvas.isDrawingMode = false;
 
-  // get pointer coordinates
-  const pointer = canvas.getPointer(options.e);
+//   // get pointer coordinates
+//   const pointer = canvas.getPointer(options.e);
 
-  // depending on the selected shape, set the dimensions of the shape stored in shapeRef in previous step of handelCanvasMouseDown
-  // calculate shape dimensions based on pointer coordinates
-  switch (selectedShapeRef?.current) {
-    case "rectangle":
-      shapeRef.current?.set({
-        width: pointer.x - (shapeRef.current?.left || 0),
-        height: pointer.y - (shapeRef.current?.top || 0),
-      });
-      break;
+//   // depending on the selected shape, set the dimensions of the shape stored in shapeRef in previous step of handelCanvasMouseDown
+//   // calculate shape dimensions based on pointer coordinates
+//   switch (selectedShapeRef?.current) {
+//     case "rectangle":
+//       shapeRef.current?.set({
+//         width: pointer.x - (shapeRef.current?.left || 0),
+//         height: pointer.y - (shapeRef.current?.top || 0),
+//       });
+//       break;
 
-    case "circle":
-      shapeRef.current.set({
-        radius: Math.abs(pointer.x - (shapeRef.current?.left || 0)) / 2,
-      });
-      break;
+//     case "circle":
+//       shapeRef.current.set({
+//         radius: Math.abs(pointer.x - (shapeRef.current?.left || 0)) / 2,
+//       });
+//       break;
 
-    case "triangle":
-      shapeRef.current?.set({
-        width: pointer.x - (shapeRef.current?.left || 0),
-        height: pointer.y - (shapeRef.current?.top || 0),
-      });
-      break;
+//     case "triangle":
+//       shapeRef.current?.set({
+//         width: pointer.x - (shapeRef.current?.left || 0),
+//         height: pointer.y - (shapeRef.current?.top || 0),
+//       });
+//       break;
 
-    case "line":
-      shapeRef.current?.set({
-        x2: pointer.x,
-        y2: pointer.y,
-      });
-      break;
+//     case "line":
+//       shapeRef.current?.set({
+//         x2: pointer.x,
+//         y2: pointer.y,
+//       });
+//       break;
 
-    case "image":
-      shapeRef.current?.set({
-        width: pointer.x - (shapeRef.current?.left || 0),
-        height: pointer.y - (shapeRef.current?.top || 0),
-      });
+//     case "image":
+//       shapeRef.current?.set({
+//         width: pointer.x - (shapeRef.current?.left || 0),
+//         height: pointer.y - (shapeRef.current?.top || 0),
+//       });
 
-    default:
-      break;
-  }
+//     default:
+//       break;
+//   }
 
-  // render objects on canvas
-  // renderAll: http://fabricjs.com/docs/fabric.Canvas.html#renderAll
-  canvas.renderAll();
+//   // render objects on canvas
+//   // renderAll: http://fabricjs.com/docs/fabric.Canvas.html#renderAll
+//   canvas.renderAll();
 
-  // sync shape in storage
-  if (shapeRef.current?.objectId) {
-    syncShapeInStorage(shapeRef.current);
-  }
-};
+//   // sync shape in storage
+//   if (shapeRef.current?.objectId) {
+//     syncShapeInStorage(shapeRef.current);
+//   }
+// };
 
 // // handle mouse up event on canvas to stop drawing shapes
 // export const handleCanvasMouseUp = ({
