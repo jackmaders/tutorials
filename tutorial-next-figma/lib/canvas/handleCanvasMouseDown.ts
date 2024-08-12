@@ -1,11 +1,11 @@
-import { Canvas, FabricObject, TEvent } from "fabric";
+import FabricObjectType from "@/constants/enums/canvasObjectType.enum";
+import { Canvas, FabricObject, PencilBrush, TEvent } from "fabric";
 import createSpecificShape from "../shapes/createSpecificShape";
-import ShapeType from "@/constants/enums/shapeType.enum";
 
 interface handleCanvasMouseDownProps {
   options: TEvent;
   canvas: Canvas;
-  selectedShapeRef: React.MutableRefObject<ShapeType>;
+  selectedShapeRef: React.MutableRefObject<FabricObjectType>;
   isDrawing: React.MutableRefObject<boolean>;
   shapeRef: React.MutableRefObject<FabricObject | null>;
 }
@@ -32,9 +32,10 @@ function handleCanvasMouseDown({
   canvas.isDrawingMode = false;
 
   // if selected shape is freeform, set drawing mode to true and return
-  if (selectedShapeRef.current === ShapeType.FREEFORM) {
+  if (selectedShapeRef.current === FabricObjectType.FREEFORM) {
     isDrawing.current = true;
     canvas.isDrawingMode = true;
+    canvas.freeDrawingBrush = new PencilBrush(canvas);
 
     if (canvas.freeDrawingBrush) canvas.freeDrawingBrush.width = 5;
 

@@ -1,8 +1,8 @@
-import ShapeType from "@/constants/enums/shapeType.enum";
+import FabricObjectType from "@/constants/enums/canvasObjectType.enum";
 
-function parseShape(value: string): ShapeType | undefined {
-  if (Object.values(ShapeType).includes(value as ShapeType)) {
-    return value as ShapeType;
+function parseShape(value: string): FabricObjectType | undefined {
+  if (Object.values(FabricObjectType).includes(value as FabricObjectType)) {
+    return value as FabricObjectType;
   }
   return undefined;
 }

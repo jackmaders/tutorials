@@ -1,25 +1,28 @@
-import ShapeType from "@/constants/enums/shapeType.enum";
+import FabricObjectType from "@/constants/enums/canvasObjectType.enum";
 import createCircle from "./createCircle";
 import createLine from "./createLine";
 import createRectangle from "./createRectangle";
 import createText from "./createText";
 import createTriangle from "./createTriangle";
 
-function createSpecificShape(shapeType: ShapeType, pointer: PointerEvent) {
+function createSpecificShape(
+  shapeType: FabricObjectType,
+  pointer: PointerEvent,
+) {
   switch (shapeType) {
-    case ShapeType.RECTANGLE:
+    case FabricObjectType.RECTANGLE:
       return createRectangle(pointer);
 
-    case ShapeType.TRIANGLE:
+    case FabricObjectType.TRIANGLE:
       return createTriangle(pointer);
 
-    case ShapeType.CIRCLE:
+    case FabricObjectType.CIRCLE:
       return createCircle(pointer);
 
-    case ShapeType.LINE:
+    case FabricObjectType.LINE:
       return createLine(pointer);
 
-    case ShapeType.TEXT:
+    case FabricObjectType.TEXT:
       return createText(pointer, "Tap to Type");
 
     default:

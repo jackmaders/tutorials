@@ -1,10 +1,11 @@
-enum ShapeType {
-  CIRCLE = "circle",
-  LINE = "line",
-  RECTANGLE = "rectangle",
-  TEXT = "text",
-  TRIANGLE = "triangle",
-  FREEFORM = "freeform",
+import FabricObjectType from "./canvasObjectType.enum";
+
+enum FabricShape {
+  CIRCLE = FabricObjectType.CIRCLE,
+  LINE = FabricObjectType.LINE,
+  RECTANGLE = FabricObjectType.RECTANGLE,
+  TEXT = FabricObjectType.TEXT,
+  TRIANGLE = FabricObjectType.TRIANGLE,
 }
 
-export default ShapeType;
+export default FabricShape;

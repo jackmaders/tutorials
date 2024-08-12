@@ -1,14 +1,9 @@
 import fabric from "fabric";
 import { v4 as uuidv4 } from "uuid";
 
-import {
-  CustomFabricObject,
-  ElementDirection,
-  ImageUpload,
-  ModifyShape,
-} from "@/types/type";
+import { ElementDirection, ImageUpload, ModifyShape } from "@/types/type";
 import createSpecificShape from "./shapes/createSpecificShape";
-import ShapeType from "@/constants/enums/shapeType.enum";
+import FabricObjectType from "@/constants/enums/canvasObjectType.enum";
 
 export const handleImageUpload = ({
   file,
@@ -41,7 +36,7 @@ export const handleImageUpload = ({
 export const createShape = (
   canvas: fabric.Canvas,
   pointer: PointerEvent,
-  shapeType: ShapeType,
+  shapeType: FabricObjectType,
 ) => {
   if (shapeType === "freeform") {
     canvas.isDrawingMode = true;

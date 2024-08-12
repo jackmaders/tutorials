@@ -1,7 +1,11 @@
 import { Canvas } from "fabric";
 
+interface handleResizeProps {
+  canvas?: Canvas;
+}
+
 // resize canvas dimensions on window resize
-export const handleResize = ({ canvas }: { canvas: Canvas }) => {
+function handleResize({ canvas }: handleResizeProps) {
   const canvasElement = document.getElementById("canvas");
   if (!canvasElement) return;
 
@@ -11,4 +15,6 @@ export const handleResize = ({ canvas }: { canvas: Canvas }) => {
     width: canvasElement.clientWidth,
     height: canvasElement.clientHeight,
   });
-};
+}
+
+export default handleResize;
