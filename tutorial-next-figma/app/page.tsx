@@ -13,6 +13,7 @@ import handleCanvasMouseMove from "@/lib/canvas/handleCanvasMouseMove";
 import handleCanvasMouseUp from "@/lib/canvas/handleCanvasMouseUp";
 import handleCanvasObjectModified from "@/lib/canvas/handleCanvasObjectModified";
 import handleDelete from "@/lib/canvas/handleDelete";
+import handleKeyDown from "@/lib/canvas/handleKeyDown";
 import handleResize from "@/lib/canvas/handleResize";
 
 import initializeFabric from "@/lib/canvas/initialiseFabric";
@@ -21,11 +22,19 @@ import renderCanvas from "@/lib/canvas/renderCanvas";
 import parseShape from "@/lib/shapes/parseShape";
 import CustomFabricObject from "@/types/customFabricObject";
 import NavbarItem from "@/types/navbarItem";
-import { useMutation, useStorage } from "@liveblocks/react/suspense";
+import {
+  useMutation,
+  useRedo,
+  useStorage,
+  useUndo,
+} from "@liveblocks/react/suspense";
 import { Canvas } from "fabric";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 export default function Page() {
+  const undo = useUndo();
+  const redo = useRedo();
+
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const fabricRef = useRef<Canvas | undefined>();
   const isDrawing = useRef(false);
@@ -58,9 +67,9 @@ export default function Page() {
 
     if (!canvasObjects || canvasObjects.size === 0) return;
 
-    for (const [key] of canvasObjects.entries()) {
+    Array.from(canvasObjects).map(([key]) => {
       canvasObjects.delete(key);
-    }
+    });
   }, []);
 
   const deleteShapeFromStorage = useMutation(({ storage }, objectId) => {
@@ -146,13 +155,34 @@ export default function Page() {
       });
     };
 
+    const handleKeydownEvent = (event: KeyboardEvent) => {
+      handleKeyDown({
+        event,
+        canvas,
+        undo,
+        redo,
+        syncShapeInStorage,
+        deleteShapeFromStorage,
+      });
+    };
+
     window.addEventListener("resize", handleResizeEvent);
+    window.addEventListener("keydown", handleKeydownEvent);
 
     return () => {
       canvas.dispose();
+
       window.removeEventListener("resize", handleResizeEvent);
+      window.removeEventListener("keydown", handleKeydownEvent);
     };
-  }, [syncShapeInStorage, handleActiveNavbarItem]);
+  }, [
+    syncShapeInStorage,
+    handleActiveNavbarItem,
+    deleteAllShapesFromStorage,
+    deleteShapeFromStorage,
+    undo,
+    redo,
+  ]);
 
   return (
     <main className="h-screen overflow-hidden">
@@ -163,7 +193,7 @@ export default function Page() {
         imageInputRef={imageInputRef}
       />
       <section className="flex h-full flex-row">
-        <LeftSidebar allShapes={[]} />
+        <LeftSidebar allShapes={Array.from(canvasObjects)} />
         <LiveEnvironment canvasRef={canvasRef} />
         <RightSidebar />
       </section>

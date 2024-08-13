@@ -30,7 +30,7 @@ function CursorChat({
 
   function handleKeydown(event: React.KeyboardEvent<HTMLInputElement>) {
     switch (event.key) {
-      case keyboardEventKey.ESCAPE:
+      case keyboardEventKey.Escape:
         setCursorState({
           mode: cursorMode.HIDDEN,
         });

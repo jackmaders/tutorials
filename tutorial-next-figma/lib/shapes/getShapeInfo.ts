@@ -1,7 +1,7 @@
 import FabricObjectType from "@/constants/enums/canvasObjectType.enum";
 
 export const getShapeInfo = (shapeType: FabricObjectType) => {
-  switch (shapeType) {
+  switch (shapeType.toLocaleLowerCase()) {
     case FabricObjectType.RECTANGLE:
     default:
       return {
@@ -15,7 +15,7 @@ export const getShapeInfo = (shapeType: FabricObjectType) => {
         name: "Circle",
       };
 
-    case FabricObjectType.CIRCLE:
+    case FabricObjectType.TRIANGLE:
       return {
         icon: "/assets/triangle.svg",
         name: "Triangle",

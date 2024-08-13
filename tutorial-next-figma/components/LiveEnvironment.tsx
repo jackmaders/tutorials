@@ -134,20 +134,20 @@ function LiveEnvironment({ canvasRef }: LiveEnvironmentProps) {
   useEffect(() => {
     const onKeyUp = (event: KeyboardEvent) => {
       switch (event.key) {
-        case keyboardEventKey.FORWARD_SLASH:
+        case keyboardEventKey.Slash:
           setCursorState({
             mode: cursorMode.CHAT,
             previousMessage: null,
             message: "",
           });
           break;
-        case keyboardEventKey.ESCAPE:
+        case keyboardEventKey.Escape:
           updateMyPresence({ message: "" });
           setCursorState({
             mode: cursorMode.HIDDEN,
           });
           break;
-        case keyboardEventKey.E:
+        case keyboardEventKey.e:
           setCursorState({
             mode: cursorMode.REACTION_SELECTOR,
           });
@@ -157,7 +157,7 @@ function LiveEnvironment({ canvasRef }: LiveEnvironmentProps) {
 
     const onKeyDown = (event: KeyboardEvent) => {
       switch (event.key) {
-        case keyboardEventKey.FORWARD_SLASH:
+        case keyboardEventKey.Slash:
           event.preventDefault();
           break;
       }

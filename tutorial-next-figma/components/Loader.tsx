@@ -9,6 +9,7 @@ function Loader() {
         width={100}
         height={100}
         unoptimized
+        priority
         className="object-contain"
       />
       <p className="text-sm font-bold text-primary-grey-300">Loading...</p>
