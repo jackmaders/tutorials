@@ -5,22 +5,25 @@ import LiveEnvironment from "@/components/LiveEnvironment";
 import Navbar from "@/components/Navbar";
 import RightSidebar from "@/components/RightSidebar";
 import FabricObjectType from "@/constants/enums/canvasObjectType.enum";
+import NavbarValue from "@/constants/enums/navbarValue.enum";
 import navbarItems from "@/constants/navbarItems";
 
 import handleCanvasMouseDown from "@/lib/canvas/handleCanvasMouseDown";
 import handleCanvasMouseMove from "@/lib/canvas/handleCanvasMouseMove";
 import handleCanvasMouseUp from "@/lib/canvas/handleCanvasMouseUp";
 import handleCanvasObjectModified from "@/lib/canvas/handleCanvasObjectModified";
+import handleDelete from "@/lib/canvas/handleDelete";
 import handleResize from "@/lib/canvas/handleResize";
 
 import initializeFabric from "@/lib/canvas/initialiseFabric";
 import renderCanvas from "@/lib/canvas/renderCanvas";
+
 import parseShape from "@/lib/shapes/parseShape";
 import CustomFabricObject from "@/types/customFabricObject";
 import NavbarItem from "@/types/navbarItem";
 import { useMutation, useStorage } from "@liveblocks/react/suspense";
 import { Canvas } from "fabric";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 export default function Page() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -50,13 +53,43 @@ export default function Page() {
     canvasObjects.set(objectId, shapeData);
   }, []);
 
-  function handleActiveNavbarItem(navbarItem: NavbarItem) {
-    setActiveNavbarItem(navbarItem);
+  const deleteAllShapesFromStorage = useMutation(({ storage }) => {
+    const canvasObjects = storage.get("canvasObjects");
 
-    if (!Array.isArray(navbarItem.value)) {
-      selectedShapeRef.current = parseShape(navbarItem.value) ?? null;
+    if (!canvasObjects || canvasObjects.size === 0) return;
+
+    for (const [key] of canvasObjects.entries()) {
+      canvasObjects.delete(key);
     }
-  }
+  }, []);
+
+  const deleteShapeFromStorage = useMutation(({ storage }, objectId) => {
+    const canvasObjects = storage.get("canvasObjects");
+
+    canvasObjects.delete(objectId);
+  }, []);
+
+  const handleActiveNavbarItem = useCallback(
+    (navbarItem: NavbarItem) => {
+      setActiveNavbarItem(navbarItem);
+
+      switch (navbarItem.value) {
+        case NavbarValue.RESET:
+          deleteAllShapesFromStorage();
+          fabricRef.current?.clear();
+          setActiveNavbarItem(navbarItems[0]);
+          break;
+        case NavbarValue.DELETE:
+          handleDelete(fabricRef.current, deleteShapeFromStorage);
+          setActiveNavbarItem(navbarItems[0]);
+      }
+
+      if (!Array.isArray(navbarItem.value)) {
+        selectedShapeRef.current = parseShape(navbarItem.value) ?? null;
+      }
+    },
+    [deleteAllShapesFromStorage, deleteShapeFromStorage],
+  );
 
   useEffect(() => {
     renderCanvas({
@@ -107,16 +140,19 @@ export default function Page() {
       handleCanvasObjectModified({ options, syncShapeInStorage });
     });
 
-    window.addEventListener("resize", () => {
+    const handleResizeEvent = () => {
       handleResize({
         canvas: fabricRef.current,
       });
-    });
+    };
+
+    window.addEventListener("resize", handleResizeEvent);
 
     return () => {
       canvas.dispose();
+      window.removeEventListener("resize", handleResizeEvent);
     };
-  }, [syncShapeInStorage]);
+  }, [syncShapeInStorage, handleActiveNavbarItem]);
 
   return (
     <main className="h-screen overflow-hidden">

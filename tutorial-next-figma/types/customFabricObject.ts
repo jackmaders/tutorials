@@ -1,7 +1,7 @@
 import { FabricObject } from "fabric";
 
 type CustomFabricObject = FabricObject & {
-  objectId: string;
+  objectId?: string;
 };
 
 export default CustomFabricObject;
