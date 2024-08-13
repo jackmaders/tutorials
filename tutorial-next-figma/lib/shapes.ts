@@ -1,9 +1,8 @@
 import fabric, { Point } from "fabric";
-import { v4 as uuidv4 } from "uuid";
 
+import FabricObjectType from "@/constants/enums/canvasObjectType.enum";
 import { ElementDirection, ModifyShape } from "@/types/type";
 import createSpecificShape from "./shapes/createSpecificShape";
-import FabricObjectType from "@/constants/enums/canvasObjectType.enum";
 
 export const createShape = (
   canvas: fabric.Canvas,

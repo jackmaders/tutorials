@@ -5,24 +5,15 @@ import handleDelete from "./handleDelete";
 import handleCopy from "./handleCopy";
 import keyboardEventKey from "@/constants/enums/keyboardEventKey.enum";
 
-interface HandleKeyDownProps {
-  event: KeyboardEvent;
-  canvas: Canvas;
-  undo: () => void;
-  redo: () => void;
-  syncShapeInStorage: (shape: CustomFabricObject) => void;
-  deleteShapeFromStorage: (id: string) => void;
-}
-
 // create a handleKeyDown function that listen to different keydown events
-function handleKeyDown({
-  event,
-  canvas,
-  undo,
-  redo,
-  syncShapeInStorage,
-  deleteShapeFromStorage,
-}: HandleKeyDownProps) {
+function handleKeyDown(
+  event: KeyboardEvent,
+  canvas: Canvas,
+  undo: () => void,
+  redo: () => void,
+  syncShapeInStorage: (shape: CustomFabricObject) => void,
+  deleteShapeFromStorage: (id: string) => void,
+) {
   console.log(event.key);
 
   // Check if the key pressed is ctrl/cmd + c (copy)

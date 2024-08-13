@@ -2,7 +2,7 @@
 
 import { useMemo } from "react";
 import Image from "next/image";
-import { getShapeInfo } from "@/lib/shapes/getShapeInfo";
+import getShapeInfo from "@/lib/shapes/getShapeInfo";
 
 function LeftSidebar({ allShapes }: { allShapes: Array<any> }) {
   // memoize the result of this function so that it doesn't change on every render but only when there are new shapes

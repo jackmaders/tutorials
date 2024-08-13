@@ -3,23 +3,14 @@ import { Canvas, PencilBrush, TEvent } from "fabric";
 import createSpecificShape from "../shapes/createSpecificShape";
 import CustomFabricObject from "@/types/customFabricObject";
 
-interface handleCanvasMouseDownProps {
-  options: TEvent;
-  canvas: Canvas;
-  selectedShapeRef: React.MutableRefObject<FabricObjectType | null>;
-  activeObjectRef: React.MutableRefObject<CustomFabricObject | null>;
-  isDrawing: React.MutableRefObject<boolean>;
-  shapeRef: React.MutableRefObject<CustomFabricObject | null>;
-}
-
-function handleCanvasMouseDown({
-  options,
-  canvas,
-  selectedShapeRef,
-  activeObjectRef,
-  isDrawing,
-  shapeRef,
-}: handleCanvasMouseDownProps) {
+function handleCanvasMouseDown(
+  options: TEvent,
+  canvas: Canvas,
+  isDrawing: React.MutableRefObject<boolean>,
+  shapeRef: React.MutableRefObject<CustomFabricObject | null>,
+  selectedShapeRef: React.MutableRefObject<FabricObjectType | null>,
+  activeObjectRef: React.MutableRefObject<CustomFabricObject | null>,
+) {
   // get pointer coordinates
   const point = canvas.getScenePoint(options.e);
 

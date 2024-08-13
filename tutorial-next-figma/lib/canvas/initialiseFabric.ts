@@ -1,11 +1,10 @@
 import { Canvas } from "fabric";
 
-interface initializeFabricProps {
-  fabricRef: React.MutableRefObject<Canvas | undefined>;
-  canvasRef: React.MutableRefObject<HTMLCanvasElement | null>;
-}
 // initialize fabric canvas
-function initializeFabric({ fabricRef, canvasRef }: initializeFabricProps) {
+function initializeFabric(
+  fabricRef: React.MutableRefObject<Canvas | undefined>,
+  canvasRef: React.MutableRefObject<HTMLCanvasElement | null>,
+) {
   // get canvas element
   const canvasElement = document.getElementById("canvas");
 

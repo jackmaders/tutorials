@@ -1,18 +1,12 @@
 import CustomFabricObject from "@/types/customFabricObject";
 import { Canvas, FabricImage } from "fabric";
 
-interface ImageUploadProps {
-  file: File;
-  canvas: React.MutableRefObject<Canvas | undefined>;
-  shapeRef: React.MutableRefObject<CustomFabricObject | null>;
-  syncShapeInStorage: (shape: Object) => void;
-}
-function handleImageUpload({
-  file,
-  canvas,
-  shapeRef,
-  syncShapeInStorage,
-}: ImageUploadProps) {
+function handleImageUpload(
+  file: File,
+  canvas: Canvas,
+  shapeRef: React.MutableRefObject<CustomFabricObject | null>,
+  syncShapeInStorage: (shape: Object) => void,
+) {
   const reader = new FileReader();
 
   reader.onload = () => {
@@ -21,14 +15,14 @@ function handleImageUpload({
         img.scaleToWidth(200);
         img.scaleToHeight(200);
 
-        canvas.current?.add(img);
+        canvas?.add(img);
 
         img.objectId = crypto.randomUUID();
 
         shapeRef.current = img;
 
         syncShapeInStorage(img);
-        canvas.current?.requestRenderAll();
+        canvas?.requestRenderAll();
       },
     );
   };

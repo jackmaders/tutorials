@@ -1,15 +1,10 @@
 import CustomFabricObject from "@/types/customFabricObject";
 import { FabricObject, ModifiedEvent } from "fabric";
 
-interface CanvasObjectModifiedProps {
-  options: ModifiedEvent;
-  syncShapeInStorage: (shape: CustomFabricObject) => void;
-}
-
-function handleCanvasObjectModified({
-  options,
-  syncShapeInStorage,
-}: CanvasObjectModifiedProps) {
+function handleCanvasObjectModified(
+  options: ModifiedEvent,
+  syncShapeInStorage: (shape: CustomFabricObject) => void,
+) {
   const target = options.target as CustomFabricObject;
   if (!target) return;
 

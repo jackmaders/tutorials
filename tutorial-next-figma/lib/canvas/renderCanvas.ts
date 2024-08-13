@@ -2,18 +2,12 @@ import CustomFabricObject from "@/types/customFabricObject";
 import { clear } from "console";
 import { Canvas, FabricObject, util } from "fabric";
 
-interface RenderCanvasProps {
-  fabricRef: React.MutableRefObject<Canvas | undefined>;
-  canvasObjects: ReadonlyMap<any, any>;
-  activeObjectRef: React.MutableRefObject<CustomFabricObject | null>;
-}
-
 // render canvas objects coming from storage on canvas
-function renderCanvas({
-  fabricRef,
-  canvasObjects,
-  activeObjectRef,
-}: RenderCanvasProps) {
+function renderCanvas(
+  fabricRef: React.MutableRefObject<Canvas | undefined>,
+  canvasObjects: ReadonlyMap<any, any>,
+  activeObjectRef: React.MutableRefObject<CustomFabricObject | null>,
+) {
   // clear canvas
   if (fabricRef.current?.contextTop) fabricRef.current?.clear();
 

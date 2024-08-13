@@ -1,6 +1,6 @@
 import FabricObjectType from "@/constants/enums/canvasObjectType.enum";
 
-export const getShapeInfo = (shapeType: FabricObjectType) => {
+function getShapeInfo(shapeType: FabricObjectType) {
   switch (shapeType.toLocaleLowerCase()) {
     case FabricObjectType.RECTANGLE:
     default:
@@ -45,4 +45,6 @@ export const getShapeInfo = (shapeType: FabricObjectType) => {
         name: "Free Drawing",
       };
   }
-};
+}
+
+export default getShapeInfo;

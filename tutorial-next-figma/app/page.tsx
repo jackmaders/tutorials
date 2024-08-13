@@ -108,69 +108,64 @@ export default function Page() {
   );
 
   useEffect(() => {
-    renderCanvas({
-      fabricRef,
-      canvasObjects,
-      activeObjectRef,
-    });
+    renderCanvas(fabricRef, canvasObjects, activeObjectRef);
   }, [canvasObjects]);
 
   useEffect(() => {
-    const canvas = initializeFabric({ canvasRef, fabricRef });
+    const canvas = initializeFabric(fabricRef, canvasRef);
 
     canvas.on("mouse:down", (options) => {
-      handleCanvasMouseDown({
+      handleCanvasMouseDown(
         options,
         canvas,
         isDrawing,
         shapeRef,
         selectedShapeRef,
         activeObjectRef,
-      });
+      );
     });
 
     canvas.on("mouse:move", (options) => {
-      handleCanvasMouseMove({
+      handleCanvasMouseMove(
         options,
         canvas,
+        selectedShapeRef,
         isDrawing,
         shapeRef,
-        selectedShapeRef,
         syncShapeInStorage,
-      });
+      );
     });
 
     canvas.on("mouse:up", (options) => {
-      handleCanvasMouseUp({
+      handleCanvasMouseUp(
         canvas,
         isDrawing,
         shapeRef,
-        activeObjectRef,
         selectedShapeRef,
         syncShapeInStorage,
         handleActiveNavbarItem,
-      });
+      );
     });
 
     canvas.on("object:modified", (options) => {
-      handleCanvasObjectModified({ options, syncShapeInStorage });
+      handleCanvasObjectModified(options, syncShapeInStorage);
     });
 
     const handleResizeEvent = () => {
-      handleResize({
-        canvas: fabricRef.current,
-      });
+      if (!fabricRef.current) return;
+
+      handleResize(fabricRef.current);
     };
 
     const handleKeydownEvent = (event: KeyboardEvent) => {
-      handleKeyDown({
+      handleKeyDown(
         event,
         canvas,
         undo,
         redo,
         syncShapeInStorage,
         deleteShapeFromStorage,
-      });
+      );
     };
 
     window.addEventListener("resize", handleResizeEvent);
@@ -199,13 +194,14 @@ export default function Page() {
         handleImageUpload={(event) => {
           event.stopPropagation();
           if (!event.target.files) return;
+          if (!fabricRef.current) return;
 
-          handleImageUpload({
-            file: event.target.files[0],
-            canvas: fabricRef,
+          handleImageUpload(
+            event.target.files[0],
+            fabricRef.current,
             shapeRef,
             syncShapeInStorage,
-          });
+          );
         }}
         imageInputRef={imageInputRef}
       />
