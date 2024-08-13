@@ -1,24 +1,27 @@
 import FabricObjectType from "@/constants/enums/canvasObjectType.enum";
-import { Canvas, FabricObject, PencilBrush, TEvent } from "fabric";
+import { Canvas, PencilBrush, TEvent } from "fabric";
 import createSpecificShape from "../shapes/createSpecificShape";
+import CustomFabricObject from "@/types/customFabricObject";
 
 interface handleCanvasMouseDownProps {
   options: TEvent;
   canvas: Canvas;
   selectedShapeRef: React.MutableRefObject<FabricObjectType | null>;
+  activeObjectRef: React.MutableRefObject<CustomFabricObject | null>;
   isDrawing: React.MutableRefObject<boolean>;
-  shapeRef: React.MutableRefObject<FabricObject | null>;
+  shapeRef: React.MutableRefObject<CustomFabricObject | null>;
 }
 
 function handleCanvasMouseDown({
   options,
   canvas,
   selectedShapeRef,
+  activeObjectRef,
   isDrawing,
   shapeRef,
 }: handleCanvasMouseDownProps) {
   // get pointer coordinates
-  const pointer = canvas.getScenePoint(options.e);
+  const point = canvas.getScenePoint(options.e);
 
   /**
    * get target object i.e., the object that is clicked
@@ -53,6 +56,7 @@ function handleCanvasMouseDown({
 
     // set active object to target
     canvas.setActiveObject(target);
+    activeObjectRef.current = target as CustomFabricObject;
 
     /**
      * setCoords() is used to update the controls of the object
@@ -63,10 +67,7 @@ function handleCanvasMouseDown({
     isDrawing.current = true;
 
     // create custom fabric object/shape and set it to shapeRef
-    shapeRef.current = createSpecificShape(
-      selectedShapeRef.current,
-      pointer as any,
-    );
+    shapeRef.current = createSpecificShape(selectedShapeRef.current, point);
 
     // if shapeRef is not null, add it to canvas
     if (shapeRef.current) {

@@ -4,11 +4,13 @@ import createLine from "./createLine";
 import createRectangle from "./createRectangle";
 import createText from "./createText";
 import createTriangle from "./createTriangle";
+import CustomFabricObject from "@/types/customFabricObject";
+import { Point } from "fabric";
 
 function createSpecificShape(
   shapeType: FabricObjectType,
-  pointer: PointerEvent,
-) {
+  pointer: Point,
+): CustomFabricObject | null {
   switch (shapeType) {
     case FabricObjectType.RECTANGLE:
       return createRectangle(pointer);

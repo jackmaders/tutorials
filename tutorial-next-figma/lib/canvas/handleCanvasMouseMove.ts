@@ -1,4 +1,6 @@
 import FabricObjectType from "@/constants/enums/canvasObjectType.enum";
+import FabricShape from "@/constants/enums/shapeType.enum";
+import CustomFabricObject from "@/types/customFabricObject";
 import { Canvas, FabricObject, TEvent } from "fabric";
 
 interface CanvasMouseMoveProps {
@@ -6,7 +8,7 @@ interface CanvasMouseMoveProps {
   canvas: Canvas;
   selectedShapeRef: React.MutableRefObject<FabricObjectType | null>;
   isDrawing: React.MutableRefObject<boolean>;
-  shapeRef: React.MutableRefObject<FabricObject | null>;
+  shapeRef: React.MutableRefObject<CustomFabricObject | null>;
   syncShapeInStorage: (shape: FabricObject) => void;
 }
 
@@ -26,42 +28,42 @@ function handleCanvasMouseMove({
   canvas.isDrawingMode = false;
 
   // get pointer coordinates
-  const pointer = canvas.getPointer(options.e);
+  const point = canvas.getScenePoint(options.e);
 
   // depending on the selected shape, set the dimensions of the shape stored in shapeRef in previous step of handelCanvasMouseDown
   // calculate shape dimensions based on pointer coordinates
   switch (selectedShapeRef?.current) {
-    case "rect":
+    case FabricObjectType.RECTANGLE:
       shapeRef.current?.set({
-        width: pointer.x - (shapeRef.current?.left || 0),
-        height: pointer.y - (shapeRef.current?.top || 0),
+        width: point.x - (shapeRef.current?.left || 0),
+        height: point.y - (shapeRef.current?.top || 0),
       });
       break;
 
-    case "circle":
+    case FabricObjectType.CIRCLE:
       shapeRef.current?.set({
-        radius: Math.abs(pointer.x - (shapeRef.current?.left || 0)) / 2,
+        radius: Math.abs(point.x - (shapeRef.current?.left || 0)) / 2,
       });
       break;
 
-    case "triangle":
+    case FabricObjectType.TRIANGLE:
       shapeRef.current?.set({
-        width: pointer.x - (shapeRef.current?.left || 0),
-        height: pointer.y - (shapeRef.current?.top || 0),
+        width: point.x - (shapeRef.current?.left || 0),
+        height: point.y - (shapeRef.current?.top || 0),
       });
       break;
 
-    case "line":
+    case FabricObjectType.LINE:
       shapeRef.current?.set({
-        x2: pointer.x,
-        y2: pointer.y,
+        x2: point.x,
+        y2: point.y,
       });
       break;
 
-    case "image":
+    case FabricObjectType.IMAGE:
       shapeRef.current?.set({
-        width: pointer.x - (shapeRef.current?.left || 0),
-        height: pointer.y - (shapeRef.current?.top || 0),
+        width: point.x - (shapeRef.current?.left || 0),
+        height: point.y - (shapeRef.current?.top || 0),
       });
 
     default:

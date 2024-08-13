@@ -111,19 +111,6 @@ import {
 // };
 
 // update shape in storage when object is modified
-export const handleCanvasObjectModified = ({
-  options,
-  syncShapeInStorage,
-}: CanvasObjectModified) => {
-  const target = options.target;
-  if (!target) return;
-
-  if (target?.type == "activeSelection") {
-    // fix this
-  } else {
-    syncShapeInStorage(target);
-  }
-};
 
 // update shape in storage when path is created when in freeform mode
 export const handlePathCreated = ({
@@ -243,44 +230,6 @@ export const handleCanvasObjectScaling = ({
     width: scaledWidth?.toFixed(0).toString() || "",
     height: scaledHeight?.toFixed(0).toString() || "",
   }));
-};
-
-// render canvas objects coming from storage on canvas
-export const renderCanvas = ({
-  fabricRef,
-  canvasObjects,
-  activeObjectRef,
-}: RenderCanvas) => {
-  // clear canvas
-  fabricRef.current?.clear();
-
-  // render all objects on canvas
-  Array.from(canvasObjects, ([objectId, objectData]) => {
-    /**
-     * enlivenObjects() is used to render objects on canvas.
-     * It takes two arguments:
-     * 1. objectData: object data to render on canvas
-     * 2. callback: callback function to execute after rendering objects
-     * on canvas
-     *
-     * enlivenObjects: http://fabricjs.com/docs/fabric.util.html#.enlivenObjectEnlivables
-     */
-    fabric.util.enlivenObjects([objectData]).then((enlivenedObjects) => {
-      enlivenedObjects.forEach((enlivenedObj) => {
-        // if element is active, keep it in active state so that it can be edited further
-        if (activeObjectRef.current?.objectId === objectId) {
-          fabricRef.current?.setActiveObject(
-            enlivenedObj as fabric.FabricObject,
-          );
-        }
-
-        // add object to canvas
-        fabricRef.current?.add(enlivenedObj as fabric.FabricObject);
-      });
-    });
-  });
-
-  fabricRef.current?.renderAll();
 };
 
 // zoom canvas on mouse scroll

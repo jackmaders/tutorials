@@ -1,4 +1,4 @@
-import fabric from "fabric";
+import fabric, { Point } from "fabric";
 import { v4 as uuidv4 } from "uuid";
 
 import { ElementDirection, ImageUpload, ModifyShape } from "@/types/type";
@@ -35,7 +35,7 @@ export const handleImageUpload = ({
 
 export const createShape = (
   canvas: fabric.Canvas,
-  pointer: PointerEvent,
+  point: Point,
   shapeType: FabricObjectType,
 ) => {
   if (shapeType === "freeform") {
@@ -43,7 +43,7 @@ export const createShape = (
     return null;
   }
 
-  return createSpecificShape(shapeType, pointer);
+  return createSpecificShape(shapeType, point);
 };
 
 export const modifyShape = ({

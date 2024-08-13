@@ -1,6 +1,8 @@
-import { Triangle } from "fabric";
+import { Point, Triangle } from "fabric";
 
-function createTriangle(pointer: PointerEvent) {
+type CustomFabricTriangle = Triangle & { objectId: string };
+
+function createTriangle(pointer: Point) {
   return new Triangle({
     left: pointer.x,
     top: pointer.y,
@@ -8,7 +10,7 @@ function createTriangle(pointer: PointerEvent) {
     height: 100,
     fill: "#aabbcc",
     objectId: crypto.randomUUID(),
-  });
+  }) as CustomFabricTriangle;
 }
 
 export default createTriangle;

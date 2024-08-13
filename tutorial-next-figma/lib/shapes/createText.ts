@@ -1,6 +1,8 @@
-import { IText } from "fabric";
+import { IText, Point } from "fabric";
 
-function createText(pointer: PointerEvent, text: string) {
+type CustomFabricText = IText & { objectId: string };
+
+function createText(pointer: Point, text: string) {
   return new IText(text, {
     left: pointer.x,
     top: pointer.y,
@@ -9,7 +11,7 @@ function createText(pointer: PointerEvent, text: string) {
     fontSize: 36,
     fontWeight: "400",
     objectId: crypto.randomUUID(),
-  });
+  }) as CustomFabricText;
 }
 
 export default createText;

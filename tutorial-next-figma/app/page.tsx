@@ -6,26 +6,30 @@ import Navbar from "@/components/Navbar";
 import RightSidebar from "@/components/RightSidebar";
 import FabricObjectType from "@/constants/enums/canvasObjectType.enum";
 import navbarItems from "@/constants/navbarItems";
+
 import handleCanvasMouseDown from "@/lib/canvas/handleCanvasMouseDown";
 import handleCanvasMouseMove from "@/lib/canvas/handleCanvasMouseMove";
 import handleCanvasMouseUp from "@/lib/canvas/handleCanvasMouseUp";
+import handleCanvasObjectModified from "@/lib/canvas/handleCanvasObjectModified";
 import handleResize from "@/lib/canvas/handleResize";
 
 import initializeFabric from "@/lib/canvas/initialiseFabric";
+import renderCanvas from "@/lib/canvas/renderCanvas";
 import parseShape from "@/lib/shapes/parseShape";
+import CustomFabricObject from "@/types/customFabricObject";
 import NavbarItem from "@/types/navbarItem";
 import { useMutation, useStorage } from "@liveblocks/react/suspense";
-import { Canvas, FabricObject } from "fabric";
+import { Canvas } from "fabric";
 import { useEffect, useRef, useState } from "react";
 
 export default function Page() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const fabricRef = useRef<Canvas>();
+  const fabricRef = useRef<Canvas | undefined>();
   const isDrawing = useRef(false);
-  const shapeRef = useRef<FabricObject | null>(null);
+  const shapeRef = useRef<CustomFabricObject | null>(null);
   const selectedShapeRef = useRef<FabricObjectType | null>(null);
   const imageInputRef = useRef<HTMLInputElement>(null);
-  const activeObjectRef = useRef<FabricObject>(null);
+  const activeObjectRef = useRef<CustomFabricObject>(null);
 
   const [activeNavbarItem, setActiveNavbarItem] = useState<NavbarItem>(
     navbarItems[0],
@@ -55,6 +59,14 @@ export default function Page() {
   }
 
   useEffect(() => {
+    renderCanvas({
+      fabricRef,
+      canvasObjects,
+      activeObjectRef,
+    });
+  }, [canvasObjects]);
+
+  useEffect(() => {
     const canvas = initializeFabric({ canvasRef, fabricRef });
 
     canvas.on("mouse:down", (options) => {
@@ -64,6 +76,7 @@ export default function Page() {
         isDrawing,
         shapeRef,
         selectedShapeRef,
+        activeObjectRef,
       });
     });
 
@@ -88,6 +101,10 @@ export default function Page() {
         syncShapeInStorage,
         handleActiveNavbarItem,
       });
+    });
+
+    canvas.on("object:modified", (options) => {
+      handleCanvasObjectModified({ options, syncShapeInStorage });
     });
 
     window.addEventListener("resize", () => {

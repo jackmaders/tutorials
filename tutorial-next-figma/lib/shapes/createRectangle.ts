@@ -1,6 +1,8 @@
-import { Rect } from "fabric";
+import { Point, Rect } from "fabric";
 
-function createRectangle(pointer: PointerEvent) {
+type CustomFabricRect = Rect & { objectId: string };
+
+function createRectangle(pointer: Point) {
   return new Rect({
     left: pointer.x,
     top: pointer.y,
@@ -8,7 +10,7 @@ function createRectangle(pointer: PointerEvent) {
     height: 100,
     fill: "#aabbcc",
     objectId: crypto.randomUUID(),
-  });
+  }) as CustomFabricRect;
 }
 
 export default createRectangle;
