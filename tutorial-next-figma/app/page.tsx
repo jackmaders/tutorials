@@ -18,6 +18,7 @@ import handleResize from "@/lib/canvas/handleResize";
 
 import initializeFabric from "@/lib/canvas/initialiseFabric";
 import renderCanvas from "@/lib/canvas/renderCanvas";
+import handleImageUpload from "@/lib/shapes/handleImageUpload";
 
 import parseShape from "@/lib/shapes/parseShape";
 import CustomFabricObject from "@/types/customFabricObject";
@@ -91,6 +92,12 @@ export default function Page() {
         case NavbarValue.DELETE:
           handleDelete(fabricRef.current, deleteShapeFromStorage);
           setActiveNavbarItem(navbarItems[0]);
+          break;
+        case FabricObjectType.IMAGE:
+          imageInputRef.current?.click();
+          isDrawing.current = false;
+          if (fabricRef.current) fabricRef.current.isDrawingMode = false;
+          break;
       }
 
       if (!Array.isArray(navbarItem.value)) {
@@ -189,7 +196,17 @@ export default function Page() {
       <Navbar
         activeNavbarItem={activeNavbarItem}
         handleActiveNavbarItem={handleActiveNavbarItem}
-        handleImageUpload={() => {}}
+        handleImageUpload={(event) => {
+          event.stopPropagation();
+          if (!event.target.files) return;
+
+          handleImageUpload({
+            file: event.target.files[0],
+            canvas: fabricRef,
+            shapeRef,
+            syncShapeInStorage,
+          });
+        }}
         imageInputRef={imageInputRef}
       />
       <section className="flex h-full flex-row">

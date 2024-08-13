@@ -1,37 +1,9 @@
 import fabric, { Point } from "fabric";
 import { v4 as uuidv4 } from "uuid";
 
-import { ElementDirection, ImageUpload, ModifyShape } from "@/types/type";
+import { ElementDirection, ModifyShape } from "@/types/type";
 import createSpecificShape from "./shapes/createSpecificShape";
 import FabricObjectType from "@/constants/enums/canvasObjectType.enum";
-
-export const handleImageUpload = ({
-  file,
-  canvas,
-  shapeRef,
-  syncShapeInStorage,
-}: ImageUpload) => {
-  const reader = new FileReader();
-
-  reader.onload = () => {
-    fabric.FabricImage.fromURL(reader.result as string).then((img) => {
-      img.scaleToWidth(200);
-      img.scaleToHeight(200);
-
-      canvas.current.add(img);
-
-      // @ts-ignore
-      img.objectId = uuidv4();
-
-      shapeRef.current = img;
-
-      syncShapeInStorage(img);
-      canvas.current.requestRenderAll();
-    });
-  };
-
-  reader.readAsDataURL(file);
-};
 
 export const createShape = (
   canvas: fabric.Canvas,

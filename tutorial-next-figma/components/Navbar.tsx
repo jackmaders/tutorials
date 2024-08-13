@@ -11,7 +11,7 @@ interface NavbarProps {
   activeNavbarItem?: NavbarItem;
   handleActiveNavbarItem: (element: NavbarItem) => void;
   imageInputRef: React.MutableRefObject<HTMLInputElement | null>;
-  handleImageUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleImageUpload: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 function Navbar({
