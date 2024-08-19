@@ -9,7 +9,7 @@ import {
 } from "./ui/dropdown-menu";
 import { Button } from "./ui/button";
 import NavbarItem from "@/types/navbarItem";
-import { cn } from "@/lib/utils";
+import cn from "@/lib/cn";
 
 interface ShapesMenuProps {
   item: NavbarItem;

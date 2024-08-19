@@ -5,7 +5,7 @@ import ShapesMenu from "./ShapesMenu";
 import { Button } from "./ui/button";
 import NavbarItem from "@/types/navbarItem";
 import navbarItems from "@/constants/navbarItems";
-import { cn } from "@/lib/utils";
+import cn from "@/lib/cn";
 
 interface NavbarProps {
   activeNavbarItem?: NavbarItem;

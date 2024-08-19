@@ -1,5 +1,4 @@
 import FabricObjectType from "@/constants/enums/canvasObjectType.enum";
-import FabricShape from "@/constants/enums/shapeType.enum";
 
 type NavbarShapeItem = {
   icon: string;

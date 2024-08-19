@@ -1,12 +1,6 @@
 import jsPDF from "jspdf";
-import { twMerge } from "tailwind-merge";
-import { type ClassValue, clsx } from "clsx";
 
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
-}
-
-export const exportToPdf = () => {
+function exportToPdf() {
   const canvas = document.querySelector("canvas");
 
   if (!canvas) return;
@@ -26,4 +20,6 @@ export const exportToPdf = () => {
 
   // download the pdf
   doc.save("canvas.pdf");
-};
+}
+
+export default exportToPdf;

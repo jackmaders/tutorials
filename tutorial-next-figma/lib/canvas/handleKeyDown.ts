@@ -14,8 +14,6 @@ function handleKeyDown(
   syncShapeInStorage: (shape: CustomFabricObject) => void,
   deleteShapeFromStorage: (id: string) => void,
 ) {
-  console.log(event.key);
-
   // Check if the key pressed is ctrl/cmd + c (copy)
   if ((event?.ctrlKey || event?.metaKey) && event.key === keyboardEventKey.c) {
     handleCopy(canvas);

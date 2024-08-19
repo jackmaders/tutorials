@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import styles from "./Avatar.module.css";
 import Image from "next/image";
-import { cn } from "@/lib/utils";
+import cn from "@/lib/cn";
 
 const IMAGE_SIZE = 48;
 

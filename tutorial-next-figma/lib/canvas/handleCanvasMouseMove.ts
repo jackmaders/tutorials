@@ -1,7 +1,6 @@
 import FabricObjectType from "@/constants/enums/canvasObjectType.enum";
-import FabricShape from "@/constants/enums/shapeType.enum";
 import CustomFabricObject from "@/types/customFabricObject";
-import { Canvas, FabricObject, TEvent } from "fabric";
+import { Canvas, TEvent } from "fabric";
 
 // handle mouse move event on canvas to draw shapes with different dimensions
 function handleCanvasMouseMove(
@@ -10,7 +9,7 @@ function handleCanvasMouseMove(
   selectedShapeRef: React.MutableRefObject<FabricObjectType | null>,
   isDrawing: React.MutableRefObject<boolean>,
   shapeRef: React.MutableRefObject<CustomFabricObject | null>,
-  syncShapeInStorage: (shape: FabricObject) => void,
+  syncShapeInStorage: (shape: CustomFabricObject) => void,
 ) {
   // if selected shape is freeform, return
   if (!isDrawing.current) return;

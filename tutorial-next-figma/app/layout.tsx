@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Work_Sans } from "next/font/google";
 import "./globals.css";
-import { cn } from "@/lib/utils";
+
 import { Room } from "./Room";
+import cn from "@/lib/cn";
 
 const workSans = Work_Sans({
   subsets: ["latin"],
